@@ -1,0 +1,3 @@
+method area
+heap : 객체 영역 
+stack : 메소드 실행 영역 
