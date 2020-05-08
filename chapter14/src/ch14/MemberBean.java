@@ -12,6 +12,7 @@ public class MemberBean {
 	private String address;
 	private String hobby[];
 	private String job;
+	
 	public String getId() {
 		return id;
 	}

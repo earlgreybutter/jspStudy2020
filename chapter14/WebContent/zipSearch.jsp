@@ -5,10 +5,12 @@
     <%
     request.setCharacterEncoding("UTF-8");
     String check = request.getParameter("check");
+    //out.print(check);
     String area3 = null;
     Vector<ZipcodeBean> vlist = null;
     
     if(check.equals("y")){
+    	//out.print("test") ;
     	area3=request.getParameter("area3");
     	vlist=mMgr.zipcodeRead(area3);
     }
@@ -26,7 +28,7 @@ function loadSearch(){
 		frm.area3.focus();
 		return;
 	}
-	frm.acton="zipSearch.jsp";
+	frm.action="zipSearch.jsp";
 	frm.submit();
 }
 
@@ -57,7 +59,7 @@ function sendAdd(zipcode, adds) {
 	</tr>
 	<%}else{ %>
 	<tr>
-		<td align="center"><br/>검색 후, 아래 우편번호를 클릭하면 자동으로 입력됩니다.</td>
+		<td align="center"><br/>※검색 후, 아래 우편번호를 클릭하면 자동으로 입력됩니다.</td>
 	</tr>
 	<%
 	for(int i =0; i<vlist.size();i++){
@@ -78,6 +80,7 @@ function sendAdd(zipcode, adds) {
 	}
 		}
 	}
+	
 	%>
 	<!-- 검색결과 끝 -->
 	<tr>

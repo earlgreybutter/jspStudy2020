@@ -16,7 +16,7 @@ zipcode char(5) not null,
 area1 char(10) default null,
 area2 char(20) default null,
 area3 char(30) default null
-)engine=innodb default charset=utf8;
+)engine=myisam default charset=utf8;
 
 
 # 우편번호를 한번 입력하게 되면 다음버전으로 업데이트 할때까지 
@@ -25,3 +25,8 @@ area3 char(30) default null
 
 desc tblzipcode;
 
+select * from tblzipcode limit 100;
+
+select * from tblmember;
+
+select * from tblMember where id = 'simba';
