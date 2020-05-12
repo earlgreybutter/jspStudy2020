@@ -24,8 +24,29 @@
     String keyWord="", keyField="";
     Vector<BoardBean> vlist = null;
     
+    if(request.getParameter("keyWord")!=null){
+    	keyWord=request.getParameter("keyWord");
+    	keyField=request.getParameter("keyField");
+    }
+    
+    if(request.getParameter("reload")!=null){
+    	if(request.getParameter("reload").equals("true")){
+    		keyWord="";
+    		keyField="";
+    	}
+    }
+    
+    if(request.getParameter("nowPage")!=null){
+    	nowPage=Integer.parseInt(request.getParameter("nowPage"));
+    }
+    
     start=(nowPage*numPerPage)-numPerPage;
     end=numPerPage;
+    
+    totalRecord = bMgr.getTotalCount(keyField, keyWord);
+    totalPage = (int)Math.ceil((double)totalRecord/numPerPage);
+    nowBlock = (int)Math.ceil((double)nowPage/pagePerBlock);
+    totalBlock = (int)Math.ceil((double)totalPage/pagePerBlock);
     %>
 <!DOCTYPE html>
 <html>
@@ -70,7 +91,9 @@ function check(){
 <br/>
 <table align="center" border="0" width="80%">
 <tr>
-	<td>Total : Articles</td>
+	<td>Total : <%=totalRecord %> Articles
+		(<font color="red"><%=nowPage %>/<%=totalPage %></font>)
+	</td>
 </tr>
 </table>
 
@@ -110,7 +133,12 @@ else{
 		<td align="center"><%=totalRecord-((nowPage-1)*numPerPage)-i%></td>
 		<td>
 		<%
-		// depth 부분 생략 
+		// depth 부분
+		if(depth>0){
+			for(int j=0; j<depth; j++){
+				out.println("&nbsp;&nbsp;");
+			}
+		}
 		%>
 		<a href="javascript:read('<%=num %>')"><%=subject%></a>
 		</td>
@@ -133,6 +161,36 @@ else{
 </tr>
 <tr>
 <!-- 페이징 부분 생략 -->
+<td align="center">
+	<%
+	int pageStart = (nowBlock-1)*pagePerBlock+1;
+	int pageEnd = ((pageStart+pagePerBlock)<totalPage)?(pageStart+pagePerBlock):totalPage+1;
+	
+	if(totalPage!=0){
+		if(nowBlock>1){%>
+			<a href="javascript:block('<%=nowBlock-1 %>')">prev...</a>
+		<%} %>&nbsp;
+		<%for(;pageStart<pageEnd; pageStart++){ %>
+			<a href="javascript:paging('<%=pageStart %>')">
+			<%if(pageStart==nowPage){ %>
+				<font color="blue">
+			<%} %>	
+			[<%=pageStart %>]
+			<%if(pageStart==nowPage){ %>
+				</font>
+			<%} %>
+			</a>
+		<%} //for %>&nbsp;
+		<%if(totalBlock>nowBlock) {%>
+			<a href="javascript:block('<%=nowBlock+1 %>')">...next</a>
+		<%} %>&nbsp;
+	<%}
+	%>
+</td>
+<td align="right">
+	<a href="post.jsp">[글쓰기]</a>
+	<a href="javascript:list()">[처음으로]</a>
+</td>
 </tr>
 </table>
 
@@ -156,12 +214,12 @@ else{
 	<input type="hidden" name="reload" value="true">
 	<input type="hidden" name="nowPage" value="1">
 </form>
-<from name="readFrm" method="get">
+<form name="readFrm" method="get">
 	<input type="hidden" name="num">
 	<input type="hidden" name="nowPage" value="<%=nowPage%>">
 	<input type="hidden" name="keyField" value="<%=keyField%>">
 	<input type="hidden" name="keyWord" value="<%=keyWord%>">
-</from>
+</form>
 </div>
 </body>
 </html>

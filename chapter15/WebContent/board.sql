@@ -18,3 +18,5 @@ primary key(num)
 drop table tblboard;
 
 select * from tblboard; 
+
+select * from tblboard where num=1;
