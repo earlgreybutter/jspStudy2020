@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <jsp:useBean id="regMgr" class=ch12.RegisterMgr/>
+    <jsp:useBean id="regMgr" class="ch12.RegisterMgr"/>
     <%
     String id = "";
     String pwd = "";
