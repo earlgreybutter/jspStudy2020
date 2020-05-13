@@ -243,6 +243,126 @@ public class BoardMgr {
 		}
 	}
 	
+	// 게시물 삭제 
+	public void deleteBoard(int num) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = null;
+		
+		try {
+			con=pool.getConnection();
+			sql="select filename from tblboard where num=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()&&rs.getString(1)!=null) {
+				if(!rs.getString(1).equals("")) {
+					File file = new File(SAVEFOLDER+"/"+rs.getString(1));
+					if(file.exists()) {
+						UtilMgr.delete(SAVEFOLDER+"/"+rs.getString(1));
+					}
+				}
+			}
+			
+			sql="delete from tblboard where num=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+	}
+	
+	// 게시물 수정 
+	public void updateBoard(BoardBean bean) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = null;
+		
+		try {
+			con = pool.getConnection();
+			sql="update tblboard set name=?,subject=?,content=? where num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, bean.getName());
+			pstmt.setString(2, bean.getSubject());
+			pstmt.setString(3, bean.getContent());
+			pstmt.setInt(4, bean.getNum());
+			pstmt.executeUpdate();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			pool.freeConnection(con, pstmt);
+		}
+	}
+	
+	// 게시물 답변 
+	public void replyBoard(BoardBean bean) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			con=pool.getConnection();
+			sql="insert tblboard (name, content, subject, ref, pos, depth, regdate, pass, count, ip)"
+					+ "values(?,?,?,?,?,?,now(),?,0,?)";
+			
+			int depth=bean.getDepth()+1;
+			int pos=bean.getPos()+1;
+			
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, bean.getName());
+			pstmt.setString(2, bean.getContent());
+			pstmt.setString(3, bean.getSubject());
+			pstmt.setInt(4, bean.getRef());
+			pstmt.setInt(5, pos);
+			pstmt.setInt(6, depth);
+			pstmt.setString(7, bean.getPass());
+			pstmt.setString(8, bean.getIp());
+			pstmt.executeUpdate();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			pool.freeConnection(con, pstmt);
+		}
+	}
+	
+	// 답변의 위치값 증가
+	public void replyUpBoard(int ref, int pos) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			con=pool.getConnection();
+			sql="update tblboard set pos=pos+1 where ref=? and pos>?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, ref);
+			pstmt.setInt(2, pos);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		finally {
+			pool.freeConnection(con, pstmt);
+		}
+	}
+	
 	// 파일 다운로드
 	public void downLoad(HttpServletRequest req, HttpServletResponse res, JspWriter out, PageContext pageContext ) {
 		try {
