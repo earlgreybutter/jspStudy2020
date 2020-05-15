@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
 
+import com.sun.org.apache.regexp.internal.recompile;
+
 public class PollMgr {
 
 	private DBConnectionMgr pool;
@@ -212,5 +214,82 @@ public class PollMgr {
 			pool.freeConnection(con, pstmt);
 		}
 		return flag;
+	}
+	
+	// getView
+	public Vector<PollItemBean> getView(int num){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		Vector<PollItemBean> vlist = new Vector<PollItemBean>();
+		
+		try {
+			con=pool.getConnection();
+			sql="select item, count from tblPollItem where listnum = ?";
+			pstmt=con.prepareStatement(sql);
+			
+			if(num==0) {
+				pstmt.setInt(1, getMaxNum());
+			}
+			else {
+				pstmt.setInt(1, num);
+			}
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				PollItemBean piBean = new PollItemBean();
+				String item[] = new String[1];
+				item[0] = rs.getString(1);
+				piBean.setItem(item);
+				piBean.setCount(rs.getInt(2));
+				vlist.add(piBean);
+			}
+			
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return vlist;
+	}
+	
+	// sumCount
+	public int sumCount(int num) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int count = 0;
+		
+		try {
+			con=pool.getConnection();
+			sql="select sum(count) from tblPollItem where listnum=?";
+			pstmt=con.prepareStatement(sql);
+			if(num==0) {
+				pstmt.setInt(1, getMaxNum());
+			}
+			else {
+				pstmt.setInt(1, num);
+			}
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return count;
 	}
 }
