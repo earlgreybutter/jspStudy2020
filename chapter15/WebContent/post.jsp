@@ -53,7 +53,7 @@
 		<td colspan="2">
 			<input type="submit" value="등록">
 			<input type="reset" value="다시쓰기">
-			<input type="button" value="리스트" onclick="locaton.href='list.jsp'">
+			<input type="button" value="리스트" onclick="location.href='list.jsp'">
 		</td>
 	</tr>
 	<tr>
