@@ -75,13 +75,13 @@ public class ControllerAction extends HttpServlet {
 	}
 	
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		execute(req, resp);
 	}
 	
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		execute(req, resp);
 	}

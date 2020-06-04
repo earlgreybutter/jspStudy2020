@@ -14,3 +14,5 @@ create table board(
 	primary key(num)
 );
 create sequence board_num_seq;
+
+select * from board ; 
