@@ -27,9 +27,11 @@
 </tr>
 <tr height="30">
 	<td align="center" width="125" bgcolor="${value_c}">글제목</td>
-	<td align="center" width="125" align="center">${article.subject}</td>
+	<td align="center" width="375" align="center" colspan="3">${article.subject}</td>
+</tr>
+<tr>
 	<td align="center" width="125" bgcolor="${value_c}">글내용</td>
-	<td align="center" width="125" align="center">${article.content}</td>
+	<td align="center" width="375" colspan="3"><pre>${article.content}</pre></td>
 </tr>
 <tr height="30">
 	<td colspan="4" bgcolor="${value_c}" align="right">

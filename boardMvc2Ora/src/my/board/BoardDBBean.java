@@ -57,7 +57,7 @@ public class BoardDBBean {
 			}
 			
 			if(num!=0) {
-				System.out.println("답글~~~~~~~~~~~~~~~~~~~");	// test용
+				// System.out.println("답글~~~~~~~~~~~~~~~~~~~");	// test용
 				sql="update board set re_step=re_step+1 where ref=? and re_step>?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, ref);
@@ -68,7 +68,7 @@ public class BoardDBBean {
 				re_level = re_level+1;
 			}
 			else {
-				System.out.println("새글~~~~~~~~~~~~~~~~~~~");	// test용
+				// System.out.println("새글~~~~~~~~~~~~~~~~~~~");	// test용
 				ref = number;
 				re_step=0;
 				re_level=0;
@@ -320,7 +320,7 @@ public class BoardDBBean {
 		return article;
 	}
 	
-	public BoardDataBean updateArticle(int num) throws Exception {
+	public BoardDataBean updateGetArticle(int num) throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -381,6 +381,138 @@ public class BoardDBBean {
 
 		}
 		return article;
+	}
+	
+	public int updateArticle(BoardDataBean article) throws Exception {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String dbpasswd = "";
+		String sql = "";
+		int x = -1 ;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement("select passwd from board where num = ?");
+			pstmt.setInt(1, article.getNum());
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dbpasswd = rs.getString("passwd");
+				if(dbpasswd.equals(article.getPasswd())) {
+					sql = "update board set writer=?, email=?, subject=?, passwd=?, content=? where num=?";
+					pstmt = conn.prepareStatement(sql);
+					
+					pstmt.setString(1, article.getWriter());
+					pstmt.setString(2, article.getEmail());
+					pstmt.setString(3, article.getSubject());
+					pstmt.setString(4, article.getPasswd());
+					pstmt.setString(5, article.getContent());
+					pstmt.setInt(6, article.getNum());
+					pstmt.executeUpdate();
+					
+					x = 1;
+				}
+				else {
+					x = 0;
+				}
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			// TODO: handle exception
+		}
+		finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				}
+				catch(SQLException e) {
+					
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				}
+				catch(SQLException e) {
+					
+				}
+			}
+			if(conn!=null) {
+				try {
+					conn.close();
+				}
+				catch(SQLException e) {
+					
+				}
+			}
+
+		}
+		return x;
+	}
+	
+	public int deleteArticle(int num, String passwd) throws Exception {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String dbpasswd = "";
+		int x = -1;
+		
+		try {
+			conn = getConnection();
+			
+			pstmt = conn.prepareStatement("select passwd from board where num = ? ");
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dbpasswd = rs.getString("passwd");
+				if(dbpasswd.equals(passwd)) {
+					pstmt = conn.prepareStatement("delete from board where num = ? ");
+					pstmt.setInt(1, num);
+					pstmt.executeUpdate();
+					x=1;
+				}
+				else {
+					x=0;
+				}
+			}
+		}
+		catch (Exception ex) {
+			// TODO: handle exception
+			ex.printStackTrace();
+		}
+		finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				}
+				catch(SQLException e) {
+					
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				}
+				catch(SQLException e) {
+					
+				}
+			}
+			if(conn!=null) {
+				try {
+					conn.close();
+				}
+				catch(SQLException e) {
+					
+				}
+			}
+
+		}
+		
+		return x;
 	}
 	
 }
