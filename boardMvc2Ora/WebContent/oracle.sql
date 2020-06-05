@@ -16,3 +16,8 @@ create table board(
 create sequence board_num_seq;
 
 select * from board ; 
+
+select a.* 
+from (select ROWNUM as RNUM, b.* 
+	from ( select * from board order by ref desc, re_step asc ) b) a 
+where a.RNUM >=1  and a.RNUM <=10 ;
