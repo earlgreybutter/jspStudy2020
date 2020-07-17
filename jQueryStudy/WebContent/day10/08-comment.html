@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>comment</title>
+
+		<!-- 모바일 웹 페이지 설정 -->
+		<link rel="shortcut icon" href="img/icon.png" />
+		<link rel="apple-touch-icon" href="img/icon.png" />
+		<!-- 모바일 웹 페이지 설정 끝 -->
+
+		<!--[if lt IE 9]>
+		<script src="js/html5shiv.js"></script>
+		<![endif]-->
+
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+				color: #333;
+			}
+
+			ul {
+				list-style: none;
+			}
+
+			#container {
+				padding: 30px 20px;
+			}
+
+			h1 {
+				font-size: large;
+				border-left: 10px solid #7BAEB5;
+				border-bottom: 1px solid #7BAEB5;
+				padding: 10px;
+				width: auto;
+			}
+
+			#comment_write {
+				padding: 20px 15px;
+				border-bottom: 1px solid #7BAEB5;
+			}
+
+			#comment_write label {
+				display: inline-block;
+				width: 80px;
+				font-size: 14px;
+				font-weight: bold;
+				margin-bottom: 10px;
+			}
+
+			#comment_write input[type='text'], #comment_write textarea {
+				border: 1px solid #ccc;
+				vertical-align: middle;
+				padding: 3px 10px;
+				font-size: 12px;
+				line-height: 150%;
+			}
+
+			#comment_write textarea {
+				width: 380px;
+				height: 90px
+			}
+
+			.comment_item {
+				font-size: 13px;
+				color: #333;
+				padding: 15px;
+				border-bottom: 1px dotted #ccc;
+				line-height: 150%;
+			}
+
+			.comment_item .writer {
+				color: #555;
+				line-height: 200%;
+			}
+
+			.comment_item .writer input {
+				vertical-align: middle;
+			}
+
+			.comment_item .writer .name {
+				color: #222;
+				font-weight: bold;
+				font-size: 14px;
+			}
+		</style>
+
+		<!-- jQuery Framework 참조하기 -->
+		<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+
+		<!-- 사용자 스크립트 블록 -->
+		<script type="text/javascript">
+			/**
+			 * 
+			 * 
+			 * 
+			 * 여기에 작성하세요.
+			 * 
+			 * 
+			 * 
+			 */
+		</script>
+	</head>
+	<body>
+		<div id="container">
+			<h1>jQuery Comment</h1>
+			<div id="comment_write">
+				<form id="comment_form">
+					<div>
+						<label for="user_name">작성자</label>
+						<input type="text" name="user_name" id="user_name" />
+						<input type="submit" value="저장하기" />
+					</div>
+					<div>
+						<label for="comment">덧글 내용</label>
+						<textarea name="comment" id="comment"></textarea>
+					</div>
+				</form>
+			</div>
+			<ul id="comment_list">
+				<!-- 여기에 동적 생성 요소가 들어가게 됩니다. -->
+			</ul>
+		</div>
+	</body>
+</html>
